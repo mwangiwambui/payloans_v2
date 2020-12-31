@@ -38,7 +38,7 @@
                     @endforeach
 
                 @endif
-                <form method="POST" action="{{route('loans.store')}}">
+                <form method="POST" action="{{route('loans.store')}}" enctype="multipart/form-data">
                     {{ csrf_field() }}
                 <div class="card card-default">
                     <div class="card-header">
@@ -219,14 +219,9 @@
                         <div class="row">
                             <div class="form-group">
                                 <label for="exampleInputFile">Upload bank statements for the last three months</label>
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="bank_statement" id="exampleInputFile">
-                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Upload</span>
-                                    </div>
+                                <div class="custom-file">
+                                    <input type="file" name="bank_statement" class="custom-file-input" id="customFile">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
                                 </div>
                             </div>
 

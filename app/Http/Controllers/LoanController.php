@@ -6,6 +6,9 @@ use App\Models\Loan_Applications;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\ValidationException;
+use function PHPUnit\Framework\throwException;
 use function Psy\debug;
 
 class LoanController extends Controller
@@ -41,28 +44,42 @@ class LoanController extends Controller
     public function store(Request $request)
     {
         $formInput= $request->except(array('country','street','city','address','gender', 'bank_statement'));
-        $personal_data = $request->all(array('country','street','city','address','gender'));
-        print_r ($personal_data);
-        print_r($formInput);
-        debug($personal_data);
+
         try {
             $this->validate($request, [
                 'applicant_income' => 'required',
                 'loan_amount' => 'required',
                 'loan_amount_term' => 'required',
                 'property_area' => 'required',
+                'coapplicant_id' => ['required', 'exists:users,id']
             ]);
+
         } catch (ValidationException $e) {
         }
-
-        $image = $request->file('bank_statement');
-        if ($image){
-            $imageName= $image->getClientOriginalName();
-            $image->move('uploads',$imageName);
-            $formInput['bank_statement']= $imageName;
-            $formInput['loan_amount_term'] = $request->loan_amount_term * 365;
+        if ($files = $request->file('bank_statement')) {
+            $fileName = Auth::user()->id . "." . $files->getClientOriginalExtension();
+            $files->move(public_path('uploads'), $fileName);
+            $formInput['bank_statement'] = "$fileName";
         }
-        Auth::user()->loan_processing()->create($formInput);
+
+        $response = Http::post('http://example.com/users', [
+            'gender' => 'Steve',
+            'married' => 'Network Administrator',
+            'dependants' => 'Network Administrator',
+            'education' => 'Network Administrator',
+            'self_employed' => 'Network Administrator',
+            'applicant_income' => 'Network Administrator',
+            'coapplicant_income' => 'Network Administrator',
+            'loan_amount' => 'Network Administrator',
+            'loan_amount_term' => 'Network Administrator',
+            'credit_history' => 'Network Administrator',
+            'property_area' => 'Network Administrator',
+        ]);
+
+
+        $formInput['loan_amount_term'] = $request->loan_amount_term * 365;
+
+        Auth::user()->loan_requests()->create($formInput);
         $user = User::find(Auth::user()->id);
         if($user) {
             $user->country = $request->country;
@@ -73,7 +90,7 @@ class LoanController extends Controller
             $user->save();
         }
 
-        return back()->with('message','Product has successfully been added');
+        return back()->with('message','Loan request has been received');
 
 
 //        Auth::user()->loan_processing()->create($request->all());
@@ -88,6 +105,28 @@ class LoanController extends Controller
      */
     public function show($id)
     {
+        $loans = Loan_Applications::all();
+        $borrower = User::with('loan_requests')->where('loan_status', 0)->get();
+        $members = Loan_Applications::whereHas('loan_requests', function ($query) use ($id) {
+            $query->where('user_id', $id);
+        })->paginate(5);
+
+        $number = 1;
+
+        foreach ($borrower as $key => $value) {
+            $borrower[$key]['number'] = $number++;
+            $borrower[$key]['full_name'] = $borrower[$key]['name'];
+                //$borrower[$key]['name']. ' ' . $borrower[$key]['last_name'];
+            $borrower[$key]['phone_number'] = '0701229387';
+            $borrower[$key]['bank_statement'] = ucwords(strtolower(User::find($borrower[$key]['id'])->loans_requests->bank_statement));
+            $borrower[$key]['bank_statement'] = '<button id="verify-user" type="button" class="btn btn-xs btn-primary waves-effect waves-themed" data-toggle="modal"
+                       data-target="#license_modal">View</button>';
+            $borrower[$key]['actions'] =
+                ($borrower[$key]['is_verified'] ?
+                    "<span class='fw-300'></span> <sup class='badge badge-success fw-500'>APPROVED</sup>" :
+                    '<button id="verify-user" type="button" class="btn btn-xs btn-danger waves-effect waves-themed">Approved</button>');
+        }
+        return view('admin.loans',compact('borrower'));
         //
     }
 
@@ -125,15 +164,5 @@ class LoanController extends Controller
         //
     }
 
-    public function fileUploadPost(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:pdf,xlx,csv|max:2048',
-        ]);
-        $fileName = time() . '.' . $request->file->extension();
-        $request->file->move(public_path('uploads'), $fileName);
-        return back()
-            ->with('success', 'You have succesfully upload file')
-            ->with('file', $fileName);
-    }
+
 }

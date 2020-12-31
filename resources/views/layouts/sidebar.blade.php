@@ -62,16 +62,34 @@
 {{--                            </a>--}}
 {{--                        </li>--}}
 {{--                    </ul>--}}
-{{--                </li>--}}
-{{--                <li class="nav-item">--}}
-{{--                    <a href="pages/widgets.html" class="nav-link">--}}
-{{--                        <i class="nav-icon fas fa-th"></i>--}}
-{{--                        <p>--}}
-{{--                            Widgets--}}
-{{--                            <span class="right badge badge-danger">New</span>--}}
-{{--                        </p>--}}
-{{--                    </a>--}}
-{{--                </li>--}}
+                </li>
+                @if (\Illuminate\Support\Facades\Auth::user()->id!= 3)
+                <li class="nav-item">
+                    <a href="pages/widgets.html" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            View Loans
+                        </p>
+                    </a>
+                </li>
+                @endif
+                <hr>
+                <li class="nav-item">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <a href="{{ route('logout') }}"
+                                             onclick="event.preventDefault();
+                                                            this.closest('form').submit();" class="nav-link">
+                            {{ __('Logout') }}
+                            <i class="nav-icon fas fa-arrow-left"></i>
+{{--                            <p>--}}
+{{--                                Logout--}}
+
+{{--                            </p>--}}
+                        </a>
+                    </form>
+                </li>
 {{--                <li class="nav-item">--}}
 {{--                    <a href="#" class="nav-link">--}}
 {{--                        <i class="nav-icon fas fa-copy"></i>--}}

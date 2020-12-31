@@ -12,7 +12,10 @@ class Loan_Applications extends Model
     protected $guarded = [];
 
     public function users(){
-        return $this->hasMany('App\User');
+        return $this->belongsTo('App\User');
     }
     use HasFactory;
+
+
+
 }
