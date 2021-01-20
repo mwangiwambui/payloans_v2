@@ -16,6 +16,7 @@ class AddMultipleUserRecordsToLoanApplication extends Migration
         Schema::table('loan__applications', function (Blueprint $table) {
             $table->string('job_title')->nullable()->default(null);
             $table->string('bank_statement')->nullable()->default(null);
+            $table->float('default_score')->nullable()->default(0);
 
         });
     }

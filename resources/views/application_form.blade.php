@@ -60,11 +60,11 @@
                                 <div class="form-group">
                                     <label>Are you married?</label>
                                     <div class="custom-control custom-radio">
-                                        <input class="custom-control-input" type="radio" id="married1" name="married" value="1">
+                                        <input class="custom-control-input" type="radio" id="married1" name="married" value="Yes">
                                         <label for="married1" class="custom-control-label">Yes</label>
                                     </div>
                                     <div class="custom-control custom-radio">
-                                        <input class="custom-control-input" type="radio" id="married2" name="married" value="0">
+                                        <input class="custom-control-input" type="radio" id="married2" name="married" value="No">
                                         <label for="married2" class="custom-control-label">No</label>
                                     </div>
 
@@ -72,11 +72,11 @@
                                 <div class="form-group">
                                     <label>Have you graduated?</label>
                                     <div class="custom-control custom-radio">
-                                        <input class="custom-control-input" type="radio" id="education1" name="education" value="0">
+                                        <input class="custom-control-input" type="radio" id="education1" name="education" value="Graduate">
                                         <label for="education1" class="custom-control-label">Yes</label>
                                     </div>
                                     <div class="custom-control custom-radio">
-                                        <input class="custom-control-input" type="radio" id="education2" name="education" value="1">
+                                        <input class="custom-control-input" type="radio" id="education2" name="education" value="Not Graduate">
                                         <label for="education2" class="custom-control-label">No</label>
                                     </div>
 
@@ -85,17 +85,17 @@
                                     <label>No of dependants</label>
                                     <select class="form-control select2" name="dependants" style="width: 100%;">
                                         <option selected="selected" value="0">None</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3 or more</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option value="3+">3 or more</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Area where you live</label>
                                     <select class="form-control select2" name="property_area" style="width: 100%;">
-                                        <option value="2">Urban</option>
-                                        <option value="1">Semi-Urban</option>
-                                        <option value="0">Rural</option>
+                                        <option>Urban</option>
+                                        <option value="Semiurban">Semi-Urban</option>
+                                        <option>Rural</option>
                                     </select>
                                 </div>
 
@@ -103,11 +103,11 @@
 
                             <div class="form-group">
                                 <div class="custom-control custom-radio">
-                                    <input class="custom-control-input" type="radio" id="gender1" name="gender" value="1">
+                                    <input class="custom-control-input" type="radio" id="gender1" name="gender" value="Male">
                                     <label for="gender1" class="custom-control-label">Male</label>
                                 </div>
                                 <div class="custom-control custom-radio">
-                                    <input class="custom-control-input" type="radio" id="gender2" name="gender" value="0">
+                                    <input class="custom-control-input" type="radio" id="gender2" name="gender" value="Female">
                                     <label for="gender2" class="custom-control-label">Female</label>
                                 </div>
                             </div>
@@ -188,13 +188,13 @@
                                     <label>Are you self-employed</label>
                                     <div class="custom-control custom-radio">
                                         <div class="col-6">
-                                        <input class="custom-control-input" type="radio" id="selfemployed1" name="self_employed" value="1">
+                                        <input class="custom-control-input" type="radio" id="selfemployed1" name="self_employed" value="Yes">
                                         <label for="selfemployed1" class="custom-control-label">Yes</label>
 {{--                                    </div>--}}
                                         </div>
                                         <div class="col-6">
 {{--                                    <div class="custom-control custom-radio">--}}
-                                        <input class="custom-control-input" type="radio" id="selfemployed2" name="self_employed" value="0">
+                                        <input class="custom-control-input" type="radio" id="selfemployed2" name="self_employed" value="No">
                                         <label for="selfemployed2" class="custom-control-label">No</label>
                                         </div>
                                     </div>
@@ -244,7 +244,7 @@
                                 <!-- /.form-group -->
                                 <div class="form-group">
                                     <label>Co-applicant income</label>
-                                    <input type="text" class="form-control" name="coapplicant_income" placeholder="Enter Co-applicant income ....">
+                                    <input type="number" class="form-control" name="coapplicant_income" placeholder="Enter Co-applicant income ....">
                                 </div>
                                 <!-- /.form-group -->
                             </div>

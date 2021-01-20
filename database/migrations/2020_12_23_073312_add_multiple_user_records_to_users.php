@@ -18,7 +18,7 @@ class AddMultipleUserRecordsToUsers extends Migration
             $table->string('city')->nullable()->default(null);
             $table->string('address')->nullable()->default(null);
             $table->string('street')->nullable()->default(null);
-            $table->integer('gender')->nullable()->default(null);
+            $table->string('gender')->nullable()->default(null);
 
         });
     }

@@ -65,7 +65,7 @@
                 </li>
                 @if (\Illuminate\Support\Facades\Auth::user()->id!= 3)
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
+                    <a href="{{route('loans')}}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             View Loans

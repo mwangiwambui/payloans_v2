@@ -28,6 +28,9 @@ Route::get('/loan_application', 'App\Http\Controllers\FrontendController@loan_ap
 Route::get('/loan_calculation', 'App\Http\Controllers\FrontendController@loan_calculation')->name('loan_calculation');
 
 Route::resource('loans' ,'App\Http\Controllers\LoanController');
+Route::get('/view_loans' ,'App\Http\Controllers\LoanController@get_loans')->name('backend.loans.view');
+Route::get('/approve_loans' ,'App\Http\Controllers\LoanController@approve_loans')->name('backend.loans.approve');
+Route::get('/view_all_loans' ,'App\Http\Controllers\LoanController@view_loans')->name('loans');
 
 
 

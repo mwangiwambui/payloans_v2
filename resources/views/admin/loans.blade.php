@@ -92,13 +92,28 @@
 
 
 @endsection
+
 @push('backend-scripts')
     <script>
+        let toast = Swal.mixin({
+            buttonsStyling: false,
+            customClass: {
+                confirmButton: 'btn btn-alt-success m-5',
+                input: 'form-control'
+            }
+        });
         $(()=>{
-            const members_loans = $('#members_loans');
-            const d_table = members_loans.DataTable({
-                'ajax': {
-                    url: "{{ route('backend.get.loans') }}",
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            const doctors_table = $('table#table_doctors');
+            let data;
+            const d_table = doctors_table.DataTable({
+                ajax: {
+                    url: "{{ route('backend.loans.view') }}",
+                    dataType : "json",
                     dataSrc: ''
                 },
                 columns: [
@@ -106,28 +121,59 @@
                     {data: 'full_name'},
                     {data: 'phone_number'},
                     {data: 'email'},
-                    {data: 'license_no'},
-                    {data: 'hospital_name'},
+                    {data: 'bank_statement'},
+                    {data: 'loan_amount_term'},
                 ]
             });
-            console.log(d_table);
-            {{--const doctors_datatable = doctors_table.DataTable({--}}
-            {{--    ajax: {--}}
-            {{--        url: "{{ route('backend.get.doctors') }}",--}}
-            {{--        dataType:'json',--}}
-            {{--        dataSrc: ''--}}
-            {{--    },--}}
-            {{--    columns: [--}}
-            {{--        {data: 'number'},--}}
-            {{--        {data: 'full_name'},--}}
-            {{--        {data: 'phone_number'},--}}
-            {{--        {data: 'email'},--}}
-            {{--        {data: 'license_no'},--}}
-            {{--        {data: 'license_doc'},--}}
-            {{--        {data: 'hospital_name'},--}}
-            {{--        {data: 'actionss'},--}}
-            {{--    ]--}}
-            {{--});--}}
-        })
+            d_table.on('click','#verify-doc',function (event) {
+                const _this = event.target;
+                const tr = $(_this).closest('tr');
+                const rowIndex = d_table.row(tr).index();
+                const rowData = d_table.rows(rowIndex).data()[0];
+                data = rowData.license_document
+            });
+            d_table.on('click','#verify-user',function (event) {
+                event.preventDefault();
+                const _this = event.target;
+                const tr = $(_this).closest('tr');
+                const rowIndex = d_table.row(tr).index();
+                const rowData = d_table.rows(rowIndex).data()[0];
+                let data = {id:rowData.id,name:rowData.full_name};
+                $.ajax({
+                    url: '{{route('backend.loans.approve')}}',
+                    data: data,
+                    type: 'POST',
+                    success: function (res) {
+                        toast.fire({
+                            title: 'Success',
+                            text: res.msg,
+                            icon: 'success',
+                            showCancelButton: false,
+                            customClass: {
+                                confirmButton: 'btn btn-alt-success m-1'
+                            },
+                            confirmButtonText: 'Ok',
+                            html: false,
+                            preConfirm: e => {
+                                return new Promise(resolve => {
+                                    setTimeout(() => {
+                                        toastr["success"](res.msg);
+                                        resolve();
+                                    }, 50);
+                                });
+                            }
+                        }).then(result => {
+                            d_table.ajax.reload();
+                        });
+                    }
+                });
+            });
+
+            $('#license_modal').on('show.bs.modal',function (event) {
+                let image_path = "{{asset('uploads/')}}";
+                let image_url = image_path+"/"+data;
+                $('#embed-license-doc').prop('src',image_url);
+            });
+        });
     </script>
 @endpush
