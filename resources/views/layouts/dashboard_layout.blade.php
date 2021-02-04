@@ -30,6 +30,7 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('admin_lte') }}/plugins/summernote/summernote-bs4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.9/sweetalert2.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css"/>
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -91,8 +92,10 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 {{--<script src="{{ asset('admin_lte') }}/dist/js/pages/dashboard.js"></script>--}}
 <script src="{{ asset('admin_lte/js/notifications/toastr/toastr.js') }}"></script>
-
+<script src="{{asset('admin_lte/js/notifications/sweetalert2/sweetalert2.bundle.js')}}"></script>
 <!-- bs-custom-file-input -->
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
 <script src="{{ asset('admin_lte') }}/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 
 <script>

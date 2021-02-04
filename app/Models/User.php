@@ -50,15 +50,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+//    /**
+//     * The accessors to append to the model's array form.
+//     *
+//     * @var array
+//     */
+//    protected $appends = [
+//        'profile_photo_url',
+//    ];
+
     public function loan_requests(){
         return $this->hasMany(Loan_Applications::class);
+    }
+    public function guarantor(){
+        return $this->hasMany(Guarantor::class);
     }
 }

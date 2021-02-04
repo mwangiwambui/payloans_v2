@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guarantor;
 use App\Models\Loan_Applications;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\Console\Input\Input;
 use function Sodium\crypto_sign_ed25519_pk_to_curve25519;
 
 class LoanController extends Controller
@@ -42,7 +44,8 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
-        $formInput = $request->except(array('country', 'street', 'city', 'address', 'gender', 'bank_statement'));
+        $formInput = $request->except(array('country', 'street', 'city', 'address', 'gender', 'bank_statement', 'coapplicant_id_2','coapplicant_id_3','coapplicant_income_2', 'coapplicant_income_3'));
+//        die(print_r($formInput));
 
         try {
             $this->validate($request, [
@@ -68,43 +71,41 @@ class LoanController extends Controller
         else
             $formInput['credit_history'] = 0;
 
-//        $client = new \GuzzleHttp\Client();
-//        $response = $client->post(
-//            'http://127.0.0.1:5000/predict',
-//            [
-//                'form_params' =>
-//                    [
-//                        'gender' => $request->gender,
-//                        'married' => $request->married,
-//                        'dependants' => $request->dependants,
-//                        'education' => $request->education,
-//                        'self_employed' => $request->self_employed,
-//                        'applicant_income' => $request->applicant_income,
-//                        'coapplicant_income' => $request->coapplicant_income,
-//                        'loan_amount' => $request->loan_amount,
-//                        'loan_amount_term' => $request->loan_amount_term * 365,
-//                        'credit_history' => $request->credit_history,
-//                        'property_area' => $request->property_area,
-//                    ]
-//            ],
-//            ['Content-Type' => 'application/json']
-//        );
-//
-//        $responseJSON = json_decode($response->getBody(), true);
+       $guarantor = new Guarantor;
+       $guarantor->user_id = Auth::user()->id;
+       $guarantor->guarantor_id = $request->coapplicant_id;
+       $guarantor->save();
+       $first_guarantor = $guarantor->id;
+
+        $guarantor2 = new Guarantor;
+        $guarantor2->user_id = Auth::user()->id;
+        $guarantor2->guarantor_id = $request->coapplicant_id_2;
+        $guarantor2->save();
+        $second_guarantor = $guarantor2->id;
+
+        $guarantor3 = new Guarantor;
+        $guarantor3->user_id = Auth::user()->id;
+        $guarantor3->guarantor_id = $request->coapplicant_id_3;
+        $guarantor3->save();
+        $third_guarantor = $guarantor3->id;
+
+
+
 
         $response = Http::post('http://127.0.0.1:5000/predict', [
-            'Gender' => (int)$request->gender,
-            'Married' => (int)$request->married,
-            'Dependants' => (int)$request->dependants,
-            'Education' => (int)$request->education,
-            'Self_Employed' => (int)$request->self_employed,
+            'Gender' => $request->gender,
+            'Married' => $request->married,
+            'Dependants' => $request->dependants,
+            'Education' => $request->education,
+            'Self_Employed' => $request->self_employed,
             'ApplicantIncome' => (int)$request->applicant_income,
             'CoapplicantIncome' => (int)$request->coapplicant_income,
             'LoanAmount' => (int)$request->loan_amount,
             'Loan_Amount_Term' => (int)$request->loan_amount_term * 365,
             'Credit_History' => (int)$formInput['credit_history'],
-            'Property_Area' =>(int) $request->property_area,
+            'Property_Area' => $request->property_area,
         ]);
+
 
 //        print($response->body());
         $ml_result = json_decode($response->body(), TRUE);
@@ -122,6 +123,32 @@ class LoanController extends Controller
             $user->gender = $request->gender;
             $user->save();
         }
+//First coapplicant email
+        $details = [
+            'name' => User::where('id',$request->coapplicant_id)->get('name'),
+            'requestor' => User::where('id',Auth::user()->id)->get('name'),
+            'id' => $first_guarantor
+        ];
+
+        \Mail::to(User::where('id',$request->coapplicant_id)->get('email'))->send(new \App\Mail\Gmail($details));
+
+        //Second coapplicant email
+        $details = [
+            'name' => User::where('id',$request->coapplicant_id_2)->get('name'),
+            'requestor' => User::where('id',Auth::user()->id)->get('name'),
+            'id' => $second_guarantor
+        ];
+
+        \Mail::to(User::where('id',$request->coapplicant_id_2)->get('email'))->send(new \App\Mail\Gmail($details));
+
+        //Third coapplicant email
+        $details = [
+            'name' => User::where('id',$request->coapplicant_id_3)->get('name'),
+            'requestor' => User::where('id',Auth::user()->id)->get('name'),
+            'id' => $third_guarantor
+        ];
+
+        \Mail::to(User::where('id',$request->coapplicant_id_3)->get('email'))->send(new \App\Mail\Gmail($details));
 
         return back()->with('message', 'Loan request has been received');
 
@@ -196,39 +223,7 @@ class LoanController extends Controller
     {
         //
     }
-    public function view_loans(){
-        return view('admin.loans');
-    }
-    public function get_loans($id)
-    {
-        $borrower = Loan_Applications::all();
-//        $borrower = User::with('loan_requests')->where('loan_status', 0)->get();
-//        $members = Loan_Applications::whereHas('loan_requests', function ($query) use ($id) {
-//            $query->where('user_id', $id);
-//        })->paginate(5);
-        $number = 1;
-        foreach ($borrower as $key => $value) {
-            $borrower[$key]['number'] = $number++;
-            $borrower[$key]['full_name'] = User::find($borrower[$key]['user_id']->loan_requests->name);
-            //$borrower[$key]['name']. ' ' . $borrower[$key]['last_name'];
-            $borrower[$key]['phone_number'] = '0701229387';
-            $borrower[$key]['email'] = User::find($borrower[$key]['user_id']->loan_requests->email);
-            $borrower[$key]['bank_statement'] = '<button id="verify-user" type="button" class="btn btn-xs btn-primary waves-effect waves-themed" data-toggle="modal"
-                       data-target="#license_modal">View</button>';
-            $borrower[$key]['actions'] =
-                ($borrower[$key]['is_approved'] ?
-                    "<span class='fw-300'></span> <sup class='badge badge-success fw-500'>APPROVED</sup>" :
-                    '<button id="verify-user" type="button" class="btn btn-xs btn-danger waves-effect waves-themed">Approved</button>');
-        }
-        return response()->json($borrower);
-        //
-    }
 
-    public function approve_loans(Request $request){
-        $id = $request->id;
-        Loan_Applications::where('id',$id)->update(['is_approved'=>1]);
-        return response()->json(['ok'=>true,'msg'=>$request->name.' has been verified']);
-    }
 
 
 }

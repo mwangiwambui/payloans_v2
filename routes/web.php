@@ -28,13 +28,24 @@ Route::get('/loan_application', 'App\Http\Controllers\FrontendController@loan_ap
 Route::get('/loan_calculation', 'App\Http\Controllers\FrontendController@loan_calculation')->name('loan_calculation');
 
 Route::resource('loans' ,'App\Http\Controllers\LoanController');
-Route::get('/view_loans' ,'App\Http\Controllers\LoanController@get_loans')->name('backend.loans.view');
+Route::get('/view_loans' ,'App\Http\Controllers\LoanApprovalsController@get_loans')->name('backend.loans.view');
 Route::get('/approve_loans' ,'App\Http\Controllers\LoanController@approve_loans')->name('backend.loans.approve');
-Route::get('/view_all_loans' ,'App\Http\Controllers\LoanController@view_loans')->name('loans');
+Route::get('/view_all_loans' ,'App\Http\Controllers\LoanApprovalsController@view_loans')->name('loans');
 
 
+Route::get('send-mail', function () {
 
+    $details = [
+        'title' => 'Mail from Loans Mzima Sacco',
+        'body' => 'This is for testing email using smtp'
+    ];
 
+    \Mail::to('wambui54mwangi@gmail.com')->send(new \App\Mail\Gmail($details));
+
+    dd("Email is Sent.");
+});
+
+Route::get('approve_guarantor/{id}', 'App\Http\Controllers\LoanApprovalsController@approve_guarantor');
 
 Route::group([ "middleware" => ['auth:sanctum', 'verified'] ], function() {
     Route::view('/dashboard', "dashboard")->name('dashboard');

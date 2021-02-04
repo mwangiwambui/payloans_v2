@@ -228,11 +228,12 @@
                         </div>
                         <!-- /.row -->
                         <hr>
-                        <h5>Co-applicant Details</h5>
+                        <h5>Guarantor Details</h5>
+                        <p>Kindly key in your guarantors in order of priority</p>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Co-applicant Sacco id</label>
+                                    <label>First Co-applicant Sacco id</label>
                                     <div class="input-group">
                                         <input type="number" name="coapplicant_id" class="form-control">
                                     </div>
@@ -245,6 +246,49 @@
                                 <div class="form-group">
                                     <label>Co-applicant income</label>
                                     <input type="number" class="form-control" name="coapplicant_income" placeholder="Enter Co-applicant income ....">
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Second Co-applicant Sacco id</label>
+                                    <div class="input-group">
+                                        <input type="number" name="coapplicant_id_2" class="form-control">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-6">
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                    <label>Co-applicant income</label>
+                                    <input type="number" class="form-control" name="coapplicant_income_2" placeholder="Enter Co-applicant income ....">
+                                </div>
+                                <!-- /.form-group -->
+                            </div>
+                            <!-- /.col -->
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Third Co-applicant Sacco id</label>
+                                    <div class="input-group">
+                                        <input type="number" name="coapplicant_id_3" class="form-control">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-6">
+                                <!-- /.form-group -->
+                                <div class="form-group">
+                                    <label>Co-applicant income</label>
+                                    <input type="number" class="form-control" name="coapplicant_income_3" placeholder="Enter Co-applicant income ....">
                                 </div>
                                 <!-- /.form-group -->
                             </div>
