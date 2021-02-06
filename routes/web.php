@@ -24,13 +24,13 @@ Route::get('/service_details', 'App\Http\Controllers\FrontendController@service_
 Route::get('/services', 'App\Http\Controllers\FrontendController@services')->name('services');
 //Route::get('/service_details', 'App\Http\Controllers\FrontendController@service_details')->name('service_details');
 Route::get('/service', 'App\Http\Controllers\FrontendController@service')->name('service');
-Route::get('/loan_application', 'App\Http\Controllers\FrontendController@loan_application')->name('loan_application');
-Route::get('/loan_calculation', 'App\Http\Controllers\FrontendController@loan_calculation')->name('loan_calculation');
+Route::get('/loan_application', 'App\Http\Controllers\FrontendController@loan_application')->name('loan_application')->middleware('auth:sanctum');
+Route::get('/loan_calculation', 'App\Http\Controllers\FrontendController@loan_calculation')->name('loan_calculation')->middleware('auth:sanctum');
 
 Route::resource('loans' ,'App\Http\Controllers\LoanController');
-Route::get('/view_loans' ,'App\Http\Controllers\LoanApprovalsController@get_loans')->name('backend.loans.view');
-Route::get('/approve_loans' ,'App\Http\Controllers\LoanController@approve_loans')->name('backend.loans.approve');
-Route::get('/view_all_loans' ,'App\Http\Controllers\LoanApprovalsController@view_loans')->name('loans');
+Route::get('/view_loans' ,'App\Http\Controllers\LoanApprovalsController@get_loans')->name('backend.loans.view')->middleware('auth:sanctum');
+Route::post('/approve_loans' ,'App\Http\Controllers\LoanApprovalsController@approve_loans')->name('backend.loans.approve')->middleware('auth:sanctum');
+Route::get('/view_all_loans' ,'App\Http\Controllers\LoanApprovalsController@view_loans')->name('loans')->middleware('auth:sanctum');
 
 
 Route::get('send-mail', function () {

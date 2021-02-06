@@ -28,7 +28,7 @@ class LoanApprovalsController extends Controller
             $key['actions'] =
                 ($key['is_approved'] ?
                     "<span class='fw-300'></span> <sup class='badge badge-success fw-500'>APPROVED</sup>" :
-                    '<button id="approve-user" type="button" class="btn btn-xs btn-danger waves-effect waves-themed">Approved</button>');
+                    '<button id="approve-user" type="button" class="btn btn-xs btn-danger waves-effect waves-themed">Approve</button>');
         }
         return response()->json($borrower);
         //
@@ -44,6 +44,9 @@ class LoanApprovalsController extends Controller
         die(print_r($id));
         Guarantor::where('id',$id)->update(['approved'=>1]);
         return view('dashboard');
+
+    }
+    public function get_loan_details(){
 
     }
 }
