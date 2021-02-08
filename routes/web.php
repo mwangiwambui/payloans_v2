@@ -32,6 +32,8 @@ Route::get('/view_loans' ,'App\Http\Controllers\LoanApprovalsController@get_loan
 Route::post('/approve_loans' ,'App\Http\Controllers\LoanApprovalsController@approve_loans')->name('backend.loans.approve')->middleware('auth:sanctum');
 Route::get('/view_all_loans' ,'App\Http\Controllers\LoanApprovalsController@view_loans')->name('loans')->middleware('auth:sanctum');
 
+Route::get('view_loans/{loan_Applications}','App\Http\Controllers\FrontendController@loan_details')->name('loan-details');
+Route::post('send_confirm_email','App\Http\Controllers\LoanApprovalsController@send_email_loan')->name('send.confirmation.email');
 
 Route::get('send-mail', function () {
 

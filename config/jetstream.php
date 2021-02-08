@@ -28,10 +28,10 @@ return [
     |
     */
 
-    'features' => [
-        // Features::profilePhotos(),
-        // Features::api(),
-        // Features::teams(),
-    ],
+//    'features' => [
+//        // Features::profilePhotos(),
+//        // Features::api(),
+//        // Features::teams(),
+//    ],
 
 ];

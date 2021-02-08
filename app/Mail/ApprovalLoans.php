@@ -3,13 +3,13 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class Gmail extends Mailable
+class ApprovalLoans extends Mailable
 {
     use Queueable, SerializesModels;
-
     public $details;
 
     /**
@@ -29,10 +29,9 @@ class Gmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Guarantor Request Email')
-            ->view('emails.gmail')
-            ->from('testaddress.254@gmail.com');
+        return $this->subject($this->details['subject'])
+            ->view('view.approve_loans')
+            ->from($this->details['email']);
+//        return $this->view('view.approve_loans');
     }
-
-
 }

@@ -142,6 +142,12 @@
         "hideMethod": "fadeOut"
     }
 </script>
+<script>
+    $(function () {
+        //Add text editor
+        $('#compose-textarea').summernote()
+    })
+</script>
 </body>
 </html>
 

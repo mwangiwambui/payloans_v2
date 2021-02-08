@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Loan_Applications extends Model
 {
 //    use SoftDeletes;
-    protected $guarded = [];
+//    protected $guarded = [];
+//    protected $fillable= ['name','description','size','image','category_id','price','quantity','synopsis','author'];
 
     public function users(){
         return $this->belongsTo('App\User');
     }
-    use HasFactory;
+//    use HasFactory;
 
 
 

@@ -43,6 +43,7 @@
                                     <th>Bank Statements</th>
                                     <th>Loan Default Score</th>
                                     <th>Actions</th>
+                                    <th hidden>id</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -132,9 +133,10 @@
                     {data: 'phone_number'},
                     {data: 'email'},
                     {data: 'loan_amount'},
-                    {data: 'bank_statement'},
-                    {data: 'default_score'},
+                    {data: 'bank_st'},
+                    {data: 'default_bar'},
                     {data: 'actions'},
+                    {data: 'user_id'},
                 ]
             });
             d_table.on('click', '#approve-loan', function (event) {
@@ -142,7 +144,7 @@
                 const tr = $(_this).closest('tr');
                 const rowIndex = d_table.row(tr).index();
                 const rowData = d_table.rows(rowIndex).data()[0];
-                data = rowData.bank_statement
+                data = rowData.bank_statement;
             });
             d_table.on('click', '#approve-user', function (event) {
                 event.preventDefault();
@@ -183,12 +185,23 @@
             d_table.buttons().container().appendTo('#members_loans' +
                 '_wrapper .col-md-6:eq(0)');
 
+            {{--d_table.on('click','tbody > tr > td', function (event) {--}}
+            {{--    event.preventDefault();--}}
+            {{--    const _this = event.target;--}}
+            {{--    const tr = $(_this).closest('tr');--}}
+            {{--    const rowIndex = d_table.row(tr).index();--}}
+            {{--    const rowData = d_table.rows(rowIndex).data()[0];--}}
+            {{--    let id = rowData.user_id;--}}
+            {{--    window.location.href = "{{ url('view_loans/') }}"+ "/"+id--}}
+            {{--});--}}
+
 
             $('#bank_statement_modal').on('show.bs.modal', function (event) {
                 let image_path = "{{asset('uploads/')}}";
                 let image_url = image_path + "/" + data;
                 $('#embed-license-doc').prop('src', image_url);
             });
+            $('#progress_bar').attr("aria-valuenow", )
         });
     </script>
 @endpush
