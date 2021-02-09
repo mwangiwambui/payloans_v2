@@ -5366,8 +5366,7 @@ jQuery.event = {
 			"pageX pageY screenX screenY toElement" ).split( " " ),
 		filter: function( event, original ) {
 			var body, eventDoc, doc,
-				button = original.button,
-				fromElement = original.fromElement;
+				button = original.button, fromElement = original.fromElement;
 
 			// Calculate pageX/Y if missing and clientX/Y available
 			if ( event.pageX == null && original.clientX != null ) {

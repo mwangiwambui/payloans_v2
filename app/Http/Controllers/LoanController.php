@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Guarantor;
 use App\Models\Loan_Applications;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\ValidationException;
-use Symfony\Component\Console\Input\Input;
-use function Sodium\crypto_sign_ed25519_pk_to_curve25519;
 
 class LoanController extends Controller
 {
@@ -44,7 +43,7 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
-        $formInput = $request->except(array('country', 'street', 'city', 'address', 'gender', 'bank_statement', 'coapplicant_id_2','coapplicant_id_3','coapplicant_income_2', 'coapplicant_income_3'));
+        $formInput = $request->except(array('country', 'street', 'city', 'address', 'gender', 'bank_statement', 'coapplicant_id_2', 'coapplicant_id_3', 'coapplicant_income_2', 'coapplicant_income_3'));
 //        die(print_r($formInput));
 
         try {
@@ -65,31 +64,34 @@ class LoanController extends Controller
         }
         User::find(Auth::user()->id);
         $formInput['loan_amount_term'] = $request->loan_amount_term * 365;
-        $credit_history = Loan_Applications::where('user_id',Auth::user()->id);
+        $credit_history = Loan_Applications::where('user_id', Auth::user()->id);
         if ($credit_history)
             $formInput['credit_history'] = 1;
         else
             $formInput['credit_history'] = 0;
 
-       $guarantor = new Guarantor;
-       $guarantor->user_id = Auth::user()->id;
-       $guarantor->guarantor_id = $request->coapplicant_id;
-       $guarantor->save();
-       $first_guarantor = $guarantor->id;
+        $tracking_date = Carbon::now()->timestamp;
+//        dd($date);php
+        $guarantor = new Guarantor;
+        $guarantor->user_id = Auth::user()->id;
+        $guarantor->guarantor_id = $request->coapplicant_id;
+        $guarantor->tracking_number = $tracking_date;
+        $guarantor->save();
+        $first_guarantor = $guarantor->id;
 
         $guarantor2 = new Guarantor;
         $guarantor2->user_id = Auth::user()->id;
         $guarantor2->guarantor_id = $request->coapplicant_id_2;
+        $guarantor2->tracking_number = $tracking_date;
         $guarantor2->save();
         $second_guarantor = $guarantor2->id;
 
         $guarantor3 = new Guarantor;
         $guarantor3->user_id = Auth::user()->id;
         $guarantor3->guarantor_id = $request->coapplicant_id_3;
+        $guarantor3->tracking_number = $tracking_date;
         $guarantor3->save();
         $third_guarantor = $guarantor3->id;
-
-
 
 
         $response = Http::post('http://127.0.0.1:5000/predict', [
@@ -125,30 +127,30 @@ class LoanController extends Controller
         }
 //First coapplicant email
         $details = [
-            'name' => User::where('id',$request->coapplicant_id)->get('name'),
-            'requestor' => User::where('id',Auth::user()->id)->get('name'),
+            'name' => User::where('id', $request->coapplicant_id)->get('name'),
+            'requestor' => User::where('id', Auth::user()->id)->get('name'),
             'id' => $first_guarantor
         ];
 
-        \Mail::to(User::where('id',$request->coapplicant_id)->get('email'))->send(new \App\Mail\Gmail($details));
+        \Mail::to(User::where('id', $request->coapplicant_id)->get('email'))->send(new \App\Mail\Gmail($details));
 
         //Second coapplicant email
         $details = [
-            'name' => User::where('id',$request->coapplicant_id_2)->get('name'),
-            'requestor' => User::where('id',Auth::user()->id)->get('name'),
+            'name' => User::where('id', $request->coapplicant_id_2)->get('name'),
+            'requestor' => User::where('id', Auth::user()->id)->get('name'),
             'id' => $second_guarantor
         ];
 
-        \Mail::to(User::where('id',$request->coapplicant_id_2)->get('email'))->send(new \App\Mail\Gmail($details));
+        \Mail::to(User::where('id', $request->coapplicant_id_2)->get('email'))->send(new \App\Mail\Gmail($details));
 
         //Third coapplicant email
         $details = [
-            'name' => User::where('id',$request->coapplicant_id_3)->get('name'),
-            'requestor' => User::where('id',Auth::user()->id)->get('name'),
+            'name' => User::where('id', $request->coapplicant_id_3)->get('name'),
+            'requestor' => User::where('id', Auth::user()->id)->get('name'),
             'id' => $third_guarantor
         ];
 
-        \Mail::to(User::where('id',$request->coapplicant_id_3)->get('email'))->send(new \App\Mail\Gmail($details));
+        \Mail::to(User::where('id', $request->coapplicant_id_3)->get('email'))->send(new \App\Mail\Gmail($details));
 
         return back()->with('message', 'Loan request has been received');
 
@@ -223,7 +225,6 @@ class LoanController extends Controller
     {
         //
     }
-
 
 
 }

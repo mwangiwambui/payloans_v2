@@ -20,7 +20,7 @@ class CreateGuarantorsTable extends Migration
                 ->onDelete('cascade');
             $table->foreignId('user_id');
             $table->tinyInteger('approved');
-            $table->text('tracking_number');
+            $table->string('tracking_number');
             $table->timestamps();
 
             $table->unique(['guarantor_id', 'user_id']);

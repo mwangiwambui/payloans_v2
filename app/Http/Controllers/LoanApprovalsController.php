@@ -75,6 +75,10 @@ class LoanApprovalsController extends Controller
 //        die(print_r($id));
         Guarantor::where('id', $id)->update(['approved' => 1]);
         $borrower = Guarantor::where('id', $id)->get();
+        $approver_count = Guarantor::where('tracking_number', $borrower->tracking_number)->count();
+        if ($approver_count == 3){
+            Loan_Applications::where('id',$borrower->user_id)->update(['verified' => 1]);
+        }
 
         return view('dashboard');
 

@@ -17,6 +17,8 @@ class AddMultipleUserRecordsToLoanApplication extends Migration
             $table->string('job_title')->nullable()->default(null);
             $table->string('bank_statement')->nullable()->default(null);
             $table->float('default_score')->nullable()->default(0);
+            $table->tinyInteger('is_approved')->nullable()->default(0);
+            $table->tinyInteger('verified')->nullable()->default(0);
 
         });
     }
@@ -31,6 +33,9 @@ class AddMultipleUserRecordsToLoanApplication extends Migration
         Schema::table('loan__applications', function (Blueprint $table) {
             $table->dropColumn('job_title');
             $table->dropColumn('bank_statement');
+            $table->dropColumn('default_score');
+            $table->dropColumn('is_approved');
+            $table->dropColumn('verified');
             //
         });
     }
