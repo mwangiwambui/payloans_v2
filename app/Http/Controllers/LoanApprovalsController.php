@@ -62,9 +62,9 @@ class LoanApprovalsController extends Controller
         //
     }
 
-    public function approve_loans(Request $request)
+    public function approve_loans(Request $request, $id)
     {
-        $id = $request->id;
+//        $id = $request->id;
         Loan_Applications::where('id', $id)->update(['is_approved' => 1]);
         return response()->json(['ok' => true, 'msg' => $request->name . ' has been verified']);
     }
@@ -74,13 +74,15 @@ class LoanApprovalsController extends Controller
 //        $id = $request->id;
 //        die(print_r($id));
         Guarantor::where('id', $id)->update(['approved' => 1]);
+        dd($id);
         $borrower = Guarantor::where('id', $id)->get();
-        $approver_count = Guarantor::where('tracking_number', $borrower->tracking_number)->count();
+//        dd($borrower[0]['tracking_number']);
+        $approver_count = Guarantor::where('tracking_number', $borrower[0]['tracking_number'])->count();
         if ($approver_count == 3){
-            Loan_Applications::where('id',$borrower->user_id)->update(['verified' => 1]);
+            Loan_Applications::where('id',$borrower[0]['user_id'])->update(['verified' => 1]);
         }
 
-        return view('dashboard');
+        return view('homepage');
 
     }
 

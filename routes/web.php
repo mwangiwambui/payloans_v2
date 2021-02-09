@@ -47,7 +47,7 @@ Route::get('send-mail', function () {
     dd("Email is Sent.");
 });
 
-Route::get('approve_guarantor/{id}', 'App\Http\Controllers\LoanApprovalsController@approve_guarantor');
+Route::get('approve_guarantor/{id}', 'App\Http\Controllers\LoanApprovalsController@approve_guarantor')->name('approve.guarantor');
 
 Route::group([ "middleware" => ['auth:sanctum', 'verified'] ], function() {
     Route::view('/dashboard', "dashboard")->name('dashboard');

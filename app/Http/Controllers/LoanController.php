@@ -78,6 +78,7 @@ class LoanController extends Controller
         $guarantor->tracking_number = $tracking_date;
         $guarantor->save();
         $first_guarantor = $guarantor->id;
+//        dd($first_guarantor);
 
         $guarantor2 = new Guarantor;
         $guarantor2->user_id = Auth::user()->id;
@@ -85,6 +86,7 @@ class LoanController extends Controller
         $guarantor2->tracking_number = $tracking_date;
         $guarantor2->save();
         $second_guarantor = $guarantor2->id;
+//        dd($second_guarantor);
 
         $guarantor3 = new Guarantor;
         $guarantor3->user_id = Auth::user()->id;
@@ -92,6 +94,7 @@ class LoanController extends Controller
         $guarantor3->tracking_number = $tracking_date;
         $guarantor3->save();
         $third_guarantor = $guarantor3->id;
+//        dd($third_guarantor);
 
 
         $response = Http::post('http://127.0.0.1:5000/predict', [
@@ -191,6 +194,7 @@ class LoanController extends Controller
         return view('admin.loans', compact('borrower'));
         //
     }
+
 
     /**
      * Show the form for editing the specified resource.
