@@ -48,7 +48,7 @@ class LoanApprovalsController extends Controller
                           </div>
                           <small>
 
-                         ' . $key['default_score'] . '% Default
+                         ' . $key['default_score'] . '% default
                           </small>' :
                 '<div class="progress progress-sm">
                               <div id = "progress_bar" class="progress-bar bg-red" role="progressbar" aria-valuenow="' . $key['default_score'] . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $key['default_score'] . '%">
@@ -56,7 +56,7 @@ class LoanApprovalsController extends Controller
                           </div>
                           <small>
 
-            ' . $key['default_score'] . '% Default
+            ' . $key['default_score'] . '% default
                           </small>'
 
             );
@@ -69,8 +69,9 @@ class LoanApprovalsController extends Controller
     public function approve_loans(Request $request, $id)
     {
 //        $id = $request->id;
+
         Loan_Applications::where('id', $id)->update(['is_approved' => 1]);
-        return response()->json(['ok' => true, 'msg' => $request->name . ' has been verified']);
+        return back()->with('message', 'User has been verified');
     }
 
     public function approve_guarantor($id)
@@ -99,7 +100,7 @@ class LoanApprovalsController extends Controller
         ];
         \Mail::to($request->email)->send(new \App\Mail\ApprovalLoans($details));
 
-        return back(with('message', 'Email has been sent'));
+        return back()->with('message', 'Email has been sent');
 
 
     }
@@ -127,7 +128,7 @@ class LoanApprovalsController extends Controller
                           </div>
                           <small>
 
-                         ' . $key['default_score'] . '% Default
+                         ' . $key['default_score'] . '% default
                           </small>' :
                 '<div class="progress progress-sm">
                               <div id = "progress_bar" class="progress-bar bg-red" role="progressbar" aria-valuenow="' . $key['default_score'] . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $key['default_score'] . '%">
@@ -135,7 +136,7 @@ class LoanApprovalsController extends Controller
                           </div>
                           <small>
 
-            ' . $key['default_score'] . '% Default
+            ' . $key['default_score'] . '% default
                           </small>'
 
             );

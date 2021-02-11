@@ -2,24 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6c928b48-31dd-44ce-82ed-83adb698a5a8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/FrontendController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/FrontendController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LoanApprovalsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LoanApprovalsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LoanController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LoanController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Mail/ApprovalLoans.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Mail/ApprovalLoans.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/AuthServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/AuthServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/JetstreamServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/JetstreamServiceProvider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/auth.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2021_01_31_151239_create_guarantors_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2021_01_31_151239_create_guarantors_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/loan_detail.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/loan_detail.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/loans.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/loans.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/application_form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/application_form.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/header.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/header.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/navbar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/navbar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/sidebar.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/starter.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/starter.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -218,7 +207,7 @@
       <workItem from="1607785409270" duration="18240000" />
       <workItem from="1608259950229" duration="2561000" />
       <workItem from="1608262781105" duration="3852000" />
-      <workItem from="1612940627247" duration="44791000" />
+      <workItem from="1612940627247" duration="50550000" />
     </task>
     <servers />
   </component>
@@ -239,14 +228,18 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="969" y="398" key="NewPhpFileDialog/0.0.1536.824@0.0.1536.824" timestamp="1612972431299" />
-    <state x="425" y="187" key="run.anything.popup" timestamp="1612943177922">
+    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1613026916450">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1612943177922" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1613004509337">
+    <state x="93" y="93" width="1350" height="638" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1613026916450" />
+    <state x="425" y="187" key="run.anything.popup" timestamp="1613026859807">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1613026859807" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1613040709535">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824/0.-1200.1920.1160@0.0.1536.824" timestamp="1607847765944" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1613004509337" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1613040709535" />
   </component>
 </project>

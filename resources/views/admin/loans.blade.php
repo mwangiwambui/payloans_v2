@@ -41,7 +41,7 @@
                                     <th>Email</th>
                                     <th>Loan Amount</th>
                                     <th>Bank Statements</th>
-                                    <th>Loan Default Score</th>
+                                    <th>Confidence Level</th>
                                     <th>Actions</th>
                                     <th hidden>id</th>
                                 </tr>
@@ -147,42 +147,42 @@
                 const rowData = d_table.rows(rowIndex).data()[0];
                 data = rowData.bank_statement;
             });
-            d_table.on('click', '#approve-user', function (event) {
-                event.preventDefault();
-                const _this = event.target;
-                const tr = $(_this).closest('tr');
-                const rowIndex = d_table.row(tr).index();
-                const rowData = d_table.rows(rowIndex).data()[0];
-                let data = {id: rowData.id, name: rowData.full_name};
-                $.ajax({
-                    url: '{{route('backend.loans.approve')}}',
-                    data: data,
-                    type: 'POST',
-                    success: function (res) {
-                        toast.fire({
-                            title: 'Success',
-                            text: res.msg,
-                            icon: 'success',
-                            showCancelButton: false,
-                            customClass: {
-                                confirmButton: 'btn btn-alt-success m-1'
-                            },
-                            confirmButtonText: 'Ok',
-                            html: false,
-                            preConfirm: e => {
-                                return new Promise(resolve => {
-                                    setTimeout(() => {
-                                        toastr["success"](res.msg);
-                                        resolve();
-                                    }, 50);
-                                });
-                            }
-                        }).then(result => {
-                            d_table.ajax.reload();
-                        });
-                    }
-                });
-            });
+            {{--d_table.on('click', '#approve-user', function (event) {--}}
+            {{--    event.preventDefault();--}}
+            {{--    const _this = event.target;--}}
+            {{--    const tr = $(_this).closest('tr');--}}
+            {{--    const rowIndex = d_table.row(tr).index();--}}
+            {{--    const rowData = d_table.rows(rowIndex).data()[0];--}}
+            {{--    let data = {id: rowData.id, name: rowData.full_name};--}}
+            {{--    $.ajax({--}}
+            {{--        url: '{{route('backend.loans.approve')}}',--}}
+            {{--        data: data,--}}
+            {{--        type: 'POST',--}}
+            {{--        success: function (res) {--}}
+            {{--            toast.fire({--}}
+            {{--                title: 'Success',--}}
+            {{--                text: res.msg,--}}
+            {{--                icon: 'success',--}}
+            {{--                showCancelButton: false,--}}
+            {{--                customClass: {--}}
+            {{--                    confirmButton: 'btn btn-alt-success m-1'--}}
+            {{--                },--}}
+            {{--                confirmButtonText: 'Ok',--}}
+            {{--                html: false,--}}
+            {{--                preConfirm: e => {--}}
+            {{--                    return new Promise(resolve => {--}}
+            {{--                        setTimeout(() => {--}}
+            {{--                            toastr["success"](res.msg);--}}
+            {{--                            resolve();--}}
+            {{--                        }, 50);--}}
+            {{--                    });--}}
+            {{--                }--}}
+            {{--            }).then(result => {--}}
+            {{--                d_table.ajax.reload();--}}
+            {{--            });--}}
+            {{--        }--}}
+            {{--    });--}}
+            {{--});--}}
             d_table.buttons().container().appendTo('#members_loans' +
                 '_wrapper .col-md-6:eq(0)');
 

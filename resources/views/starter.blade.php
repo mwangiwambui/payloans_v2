@@ -89,7 +89,7 @@
                             <!-- small card -->
                             <div class="small-box bg-info">
                                 <div class="inner">
-                                    {{--                                <h3>{{$pending_apps}}</h3>--}}
+                                                                    <h3>Welcome to Mzima</h3>
 
                                     <p>Apply for a new loan</p>
                                 </div>

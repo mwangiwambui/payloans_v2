@@ -11,7 +11,7 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item active">Loan Profile</li>
                         </ol>
                     </div>
@@ -53,7 +53,7 @@
                                     {{--                                    </li>--}}
                                 </ul>
 
-                                <a href="#" class="btn btn-primary btn-block"><b>Approve</b></a>
+                                <a href="{{route('backend.loans.approve', $loan_Applications->id)}}" class="btn btn-primary btn-block"><b>Approve</b></a>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -69,7 +69,7 @@
                                 <strong><i class="fas fa-user mr-1"></i> Member ID</strong>
 
                                 <p class="text-muted">
-                                    "PLACEHOLDER"
+                                    "X42592"
                                 </p>
 
                                 <hr>
@@ -88,22 +88,22 @@
 
                                 <hr>
 
-                                <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
+{{--                                <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>--}}
 
-                                <p class="text-muted">
-                                    <span class="tag tag-danger">UI Design</span>
-                                    <span class="tag tag-success">Coding</span>
-                                    <span class="tag tag-info">Javascript</span>
-                                    <span class="tag tag-warning">PHP</span>
-                                    <span class="tag tag-primary">Node.js</span>
-                                </p>
+{{--                                <p class="text-muted">--}}
+{{--                                    <span class="tag tag-danger">UI Design</span>--}}
+{{--                                    <span class="tag tag-success">Coding</span>--}}
+{{--                                    <span class="tag tag-info">Javascript</span>--}}
+{{--                                    <span class="tag tag-warning">PHP</span>--}}
+{{--                                    <span class="tag tag-primary">Node.js</span>--}}
+{{--                                </p>--}}
 
                                 <hr>
 
-                                <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
+{{--                                <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>--}}
 
-                                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-                                    fermentum enim neque.</p>
+{{--                                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam--}}
+{{--                                    fermentum enim neque.</p>--}}
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -123,6 +123,19 @@
                                 </ul>
                             </div><!-- /.card-header -->
                             <div class="card-body">
+                                @if($success = Session::has('message'))
+                                    <div class="alert alert-success" role="alert">
+                                        {{session('message')}}
+                                    </div>
+                                @endif
+                                @if ($errors->any())
+                                    @foreach($errors->all() as $error)
+                                        <div class="alert alert-danger" role="alert">
+                                            {{$error}}
+                                        </div>
+                                    @endforeach
+
+                                @endif
                                 <div class="tab-content">
                                     <div class="active tab-pane" id="activity">
                                         <!-- Post -->
@@ -133,7 +146,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Loan Amount</th>
-                                                    <th>Loan Default Score</th>
+                                                    <th>Loan Confident Level</th>
                                                     <th>Loan Status</th>
                                                     <th>Request Date</th>
                                                 </tr>
@@ -148,7 +161,9 @@
                                     </div>
                                     <!-- /.tab-pane -->
                                     <div class="tab-pane" id="timeline">
-                                        <!-- Post -->
+
+
+                                    <!-- Post -->
                                         <div class="card-body">
                                             <table id="guarantors"
                                                    class="table table-bordered table-striped table-hover">
@@ -175,22 +190,11 @@
                                                 <div class="card-header">
                                                     <h3 class="card-title">Compose New Message</h3>
                                                 </div>
+
+
                                                 <form method="POST" action="{{route('send.confirmation.email')}}"
                                                       enctype="multipart/form-data">
-                                                    @csrf
-                                                    @if($success = Session::has('message'))
-                                                        <div class="alert alert-success" role="alert">
-                                                            {{session('message')}}
-                                                        </div>
-                                                    @endif
-                                                    @if ($errors->any())
-                                                        @foreach($errors->all() as $error)
-                                                            <div class="alert alert-danger" role="alert">
-                                                                {{$error}}
-                                                            </div>
-                                                    @endforeach
-
-                                                @endif
+                                                {{ csrf_field() }}
 
                                                 <!-- /.card-header -->
                                                     <div class="card-body">
@@ -206,30 +210,30 @@
                                                                    value="More Information On Loan Request">
                                                         </div>
                                                         <div class="form-group">
-                    <textarea name="body" id="compose-textarea" class="form-control" style="height: 300px">
-                      <h1><u>Heading Of Message</u></h1>
-                      <h4>Subheading</h4>
-                      <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain
-                        was born and I will give you a complete account of the system, and expound the actual teachings
-                        of the great explorer of the truth, the master-builder of human happiness. No one rejects,
-                        dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know
-                        how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again
-                        is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain,
-                        but because occasionally circumstances occur in which toil and pain can procure him some great
-                        pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise,
-                        except to obtain some advantage from it? But who has any right to find fault with a man who
-                        chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that
-                        produces no resultant pleasure? On the other hand, we denounce with righteous indignation and
-                        dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so
-                        blinded by desire, that they cannot foresee</p>
-                      <ul>
-                        <li>List item one</li>
-                        <li>List item two</li>
-                        <li>List item three</li>
-                        <li>List item four</li>
-                      </ul>
-                      <p>Thank you,</p>
-                      <p>John Doe</p>
+                    <textarea name="body" id="compose-textarea" class="form-control" style="height: 800px">
+{{--                      <h1><u>Heading Of Message</u></h1>--}}
+{{--                      <h4>Subheading</h4>--}}
+{{--                      <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain--}}
+{{--                        was born and I will give you a complete account of the system, and expound the actual teachings--}}
+{{--                        of the great explorer of the truth, the master-builder of human happiness. No one rejects,--}}
+{{--                        dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know--}}
+{{--                        how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again--}}
+{{--                        is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain,--}}
+{{--                        but because occasionally circumstances occur in which toil and pain can procure him some great--}}
+{{--                        pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise,--}}
+{{--                        except to obtain some advantage from it? But who has any right to find fault with a man who--}}
+{{--                        chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that--}}
+{{--                        produces no resultant pleasure? On the other hand, we denounce with righteous indignation and--}}
+{{--                        dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so--}}
+{{--                        blinded by desire, that they cannot foresee</p>--}}
+{{--                      <ul>--}}
+{{--                        <li>List item one</li>--}}
+{{--                        <li>List item two</li>--}}
+{{--                        <li>List item three</li>--}}
+{{--                        <li>List item four</li>--}}
+{{--                      </ul>--}}
+{{--                      <p>Thank you,</p>--}}
+{{--                      <p>John Doe</p>--}}
                     </textarea>
                                                         </div>
                                                         <div class="form-group">

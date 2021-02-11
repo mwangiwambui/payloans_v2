@@ -37,17 +37,17 @@ class FrontendController extends Controller
         return view('loan_calculation');
     }
     public function admin_dashboard(){
-        $applications_count = DB::table('loan__applications')->count();
+        $total_application = Loan_Applications::all();
 //        die($applications_count);
-//        $applications_count = $total_application->count();
+        $applications_count = $total_application->count();
 
-        $total_pending_apps = Loan_Applications::where('is_approved', 0)->count();
-//        $total_pending_apps = $pending_apps->count();
+        $pending_apps = Loan_Applications::where('is_approved', 0)->get();
+        $total_pending_apps = $pending_apps->count();
 
-        $total_client_applications = Loan_Applications::where('user_id', Auth::id())->count();
-//        $total_client_applications = $client_applications->count();
+        $client_applications = Loan_Applications::where('user_id', Auth::id())->get();
+        $total_client_applications = $client_applications->count();
 
-        return view('starter', compact($applications_count, $total_pending_apps, $total_client_applications));
+        return view('starter', compact('applications_count', 'total_pending_apps', 'total_client_applications'));
     }
     public function loan_application(){
         $loan_application = Loan_Applications::all();

@@ -85,8 +85,8 @@
                                     <label>No of dependants</label>
                                     <select class="form-control select2" name="dependants" style="width: 100%;">
                                         <option selected="selected" value="0">None</option>
-                                        <option>1</option>
-                                        <option>2</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
                                         <option value="3+">3 or more</option>
                                     </select>
                                 </div>

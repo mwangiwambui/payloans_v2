@@ -29,7 +29,7 @@ Route::get('/loan_calculation', 'App\Http\Controllers\FrontendController@loan_ca
 
 Route::resource('loans' ,'App\Http\Controllers\LoanController')->middleware('auth:sanctum');
 Route::get('/view_loans' ,'App\Http\Controllers\LoanApprovalsController@get_loans')->name('backend.loans.view')->middleware('auth:sanctum');
-Route::post('/approve_loans' ,'App\Http\Controllers\LoanApprovalsController@approve_loans')->name('backend.loans.approve')->middleware('auth:sanctum');
+Route::get('approve_loans/{id}' ,'App\Http\Controllers\LoanApprovalsController@approve_loans')->name('backend.loans.approve')->middleware('auth:sanctum');
 Route::get('/view_all_loans' ,'App\Http\Controllers\LoanApprovalsController@view_loans')->name('loans')->middleware('auth:sanctum');
 
 Route::get('view_loans/{loan_Applications}','App\Http\Controllers\FrontendController@loan_details')->name('loan-details')->middleware('auth:sanctum');
