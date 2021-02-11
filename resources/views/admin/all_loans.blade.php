@@ -7,8 +7,8 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Loan Approval</h1>
-                        <p>Please approve the users and recommend the way forward for the applications. </p>
+                        <h1>All Loans</h1>
+                        <p>All loans applied. </p>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -36,14 +36,15 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>Email</th>
+{{--                                    <th>Name</th>--}}
+{{--                                    <th>Phone</th>--}}
+{{--                                    <th>Email</th>--}}
                                     <th>Loan Amount</th>
-                                    <th>Bank Statements</th>
+{{--                                    <th>Bank Statements</th>--}}
                                     <th>Loan Default Score</th>
-                                    <th>Actions</th>
-                                    <th hidden>id</th>
+                                    <th>Loan Status</th>
+{{--                                    <th>Actions</th>--}}
+{{--                                    <th hidden>id</th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -123,23 +124,16 @@
                 "responsive": true, "lengthChange": false, "autoWidth": false,
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
                 ajax: {
-                    url: "{{ route('backend.loans.view') }}",
+                    url: "{{ route('loans.client.view', $id) }}",
                     dataType: "json",
                     dataSrc: ''
                 },
                 columns: [
-                    {data: 'number'},
-                    {data: 'full_name'},
-                    {data: 'phone_number'},
-                    {data: 'email'},
                     {data: 'loan_amount'},
-                    {data: 'bank_st'},
                     {data: 'default_bar'},
-                    {data: 'actions'},
-                    {data: 'user_id'},
+                    {data: 'loan_status'},
                 ]
             });
-            d_table.columns([8]).visible(false);
             d_table.on('click', '#approve-loan', function (event) {
                 const _this = event.target;
                 const tr = $(_this).closest('tr');

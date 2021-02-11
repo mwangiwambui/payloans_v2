@@ -30,8 +30,10 @@ class ApprovalLoans extends Mailable
     public function build()
     {
         return $this->subject($this->details['subject'])
-            ->view('view.approve_loans')
-            ->from($this->details['email']);
-//        return $this->view('view.approve_loans');
+            ->view('emails.approval_loans')
+            ->from('testaddress.254@gmail.com');
+
+//        'message', 'Loan request has been received'
+
     }
 }

@@ -19,8 +19,10 @@ class CreateGuarantorsTable extends Migration
             $table->foreignId('guarantor_id')->references('id')->on('users')
                 ->onDelete('cascade');
             $table->foreignId('user_id');
+
             $table->tinyInteger('approved');
             $table->string('tracking_number');
+            $table->foreignId('loan_id');
             $table->timestamps();
 
             $table->unique(['guarantor_id', 'user_id']);

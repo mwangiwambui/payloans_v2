@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account_Details;
 use App\Models\Guarantor;
 use App\Models\Loan_Applications;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoanApprovalsController extends Controller
 {
@@ -31,24 +33,25 @@ class LoanApprovalsController extends Controller
 //                    "<span class='fw-300'></span> <sup class='badge badge-success fw-500'>APPROVED</sup>" :
 //                    '<button id="approve-user" type="button" class="btn btn-xs btn-danger waves-effect waves-themed">Approve</button>');
             $key['actions'] = '
-            <a class="btn btn-primary btn-sm" href="'.route('loan-details',$key['user_id']).'">
+            <a class="btn btn-primary btn-sm" href="' . route('loan-details', $key['id']) . '">
                               <i class="fas fa-folder">
                               </i>
                               View
                           </a>
             ';
-            $key['loan_detail'] = '<a href="{{route(\'loan-details\',$key[\'user_id\'])}}"></a>';
+            $key['loan_detail'] = '<a href="{{route(\'loan-details\',$key[\'id\'])}}"></a>';
+
             $key['default_bar'] = ($key['default_score'] < 50 ? '
             <div class="progress progress-sm">
-                              <div id = "progress_bar" class="progress-bar bg-green" role="progressbar" aria-valuenow="'.$key['default_score'].'" aria-valuemin="0" aria-valuemax="100" style="width: '.$key['default_score'].'%">
+                              <div id = "progress_bar" class="progress-bar bg-green" role="progressbar" aria-valuenow="' . $key['default_score'] . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $key['default_score'] . '%">
                               </div>
                           </div>
                           <small>
 
                          ' . $key['default_score'] . '% Default
-                          </small>':
+                          </small>' :
                 '<div class="progress progress-sm">
-                              <div id = "progress_bar" class="progress-bar bg-red" role="progressbar" aria-valuenow="'.$key['default_score'].'" aria-valuemin="0" aria-valuemax="100" style="width: '.$key['default_score'].'%">
+                              <div id = "progress_bar" class="progress-bar bg-red" role="progressbar" aria-valuenow="' . $key['default_score'] . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $key['default_score'] . '%">
                               </div>
                           </div>
                           <small>
@@ -58,6 +61,7 @@ class LoanApprovalsController extends Controller
 
             );
         }
+
         return response()->json($borrower);
         //
     }
@@ -74,12 +78,12 @@ class LoanApprovalsController extends Controller
 //        $id = $request->id;
 //        die(print_r($id));
         Guarantor::where('id', $id)->update(['approved' => 1]);
-        dd($id);
+//        dd($id);
         $borrower = Guarantor::where('id', $id)->get();
 //        dd($borrower[0]['tracking_number']);
-        $approver_count = Guarantor::where('tracking_number', $borrower[0]['tracking_number'])->count();
-        if ($approver_count == 3){
-            Loan_Applications::where('id',$borrower[0]['user_id'])->update(['verified' => 1]);
+        $approver_count = Guarantor::where('loan_id', $borrower[0]['loan_id'])->count();
+        if ($approver_count == 3) {
+            Loan_Applications::where('id', $borrower[0]['user_id'])->update(['verified' => 1]);
         }
 
         return view('homepage');
@@ -94,5 +98,75 @@ class LoanApprovalsController extends Controller
             'body' => $request->body,
         ];
         \Mail::to($request->email)->send(new \App\Mail\ApprovalLoans($details));
+
+        return back(with('message', 'Email has been sent'));
+
+
+    }
+
+    public function view_my_loans(Request $request)
+    {
+        $id = Auth::id();
+        $myloans = Loan_Applications::where('id', $id)->get();
+        return view('my_loans', compact($myloans));
+
+    }
+
+    public function view_client_loans(Request $request, $id)
+    {
+        $myloans = Loan_Applications::where('user_id', $id)->get();
+
+        $number = 1;
+
+        foreach ($myloans as $key) {
+            $key['number'] = $number++;
+            $key['default_bar'] = ($key['default_score'] < 50 ? '
+            <div class="progress progress-sm">
+                              <div id = "progress_bar" class="progress-bar bg-green" role="progressbar" aria-valuenow="' . $key['default_score'] . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $key['default_score'] . '%">
+                              </div>
+                          </div>
+                          <small>
+
+                         ' . $key['default_score'] . '% Default
+                          </small>' :
+                '<div class="progress progress-sm">
+                              <div id = "progress_bar" class="progress-bar bg-red" role="progressbar" aria-valuenow="' . $key['default_score'] . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $key['default_score'] . '%">
+                              </div>
+                          </div>
+                          <small>
+
+            ' . $key['default_score'] . '% Default
+                          </small>'
+
+            );
+            $key['loan_state'] = ($key['loan_status'] == 1 ?
+                '<span class="badge badge-success">Paid</span>' :
+                '<span class="badge badge-warning">Pending</span>');
+            $key['request_date'] = date("d M Y", strtotime($key['created_at']));
+        }
+        return response()->json($myloans);
+
+    }
+
+    public function get_all_loans(Request $request)
+    {
+        $all_loans = Loan_Applications::all();
+        return view('all_loans', compact($all_loans));
+    }
+    public function get_guarantor_details(Request $request, $id){
+        $guarantor_details = Guarantor::where('loan_id', $id)->get();
+        $number = 1;
+        foreach ($guarantor_details as $key) {
+            $key['number'] = $number++;
+            $key['name'] = User::where('id', $key['guarantor_id'])->get()[0]['name'];
+            $key['email'] = User::where('id', $key['guarantor_id'])->get()[0]['email'];
+            $key['income'] = Account_Details::where('user_id', $key['guarantor_id'])->get()[0]['total_amount'];
+            $key['approved'] = ($key['approved'] == 1 ?
+                '<span class="badge badge-success">Approved</span>' :
+                '<span class="badge badge-warning">Pending</span>');
+
+        }
+
+        return response()->json($guarantor_details);
     }
 }

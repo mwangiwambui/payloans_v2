@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account_Details;
 use App\Models\Guarantor;
 use App\Models\Loan_Applications;
 use App\Models\User;
@@ -16,12 +17,20 @@ class LoanController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        $loan = Loan_Applications::all();
-        return view('application_form', compact('loan'));
+        $applications_count = Loan_Applications::all()->count();
+//        $applications_count = $total_application->count();
+
+        $total_pending_apps = Loan_Applications::where('is_approved', 0)->count();
+//        $total_pending_apps = $pending_apps->count();
+
+        $total_client_applications = Loan_Applications::where('user_id', Auth::id())->count();
+//        $total_client_applications = $client_applications->count();
+
+        return view('starter', compact($applications_count, $total_pending_apps, $total_client_applications));
     }
 
     /**
@@ -43,16 +52,17 @@ class LoanController extends Controller
      */
     public function store(Request $request)
     {
-        $formInput = $request->except(array('country', 'street', 'city', 'address', 'gender', 'bank_statement', 'coapplicant_id_2', 'coapplicant_id_3', 'coapplicant_income_2', 'coapplicant_income_3'));
+        $formInput = $request->except(array('country', 'street', 'city', 'address', 'gender', 'bank_statement', 'coapplicant_id_2', 'coapplicant_id_3'));
 //        die(print_r($formInput));
 
         try {
             $this->validate($request, [
-                'applicant_income' => 'required',
+//                'applicant_income' => 'required',
                 'loan_amount' => 'required',
                 'loan_amount_term' => 'required',
                 'property_area' => 'required',
-                'coapplicant_id' => ['required', 'exists:users,id']
+                'coapplicant_id' => ['required', 'exists:users,id'],
+                'coapplicant_id_2' => ['required', 'exists:users,id']
             ]);
 
         } catch (ValidationException $e) {
@@ -70,31 +80,12 @@ class LoanController extends Controller
         else
             $formInput['credit_history'] = 0;
 
-        $tracking_date = Carbon::now()->timestamp;
-//        dd($date);php
-        $guarantor = new Guarantor;
-        $guarantor->user_id = Auth::user()->id;
-        $guarantor->guarantor_id = $request->coapplicant_id;
-        $guarantor->tracking_number = $tracking_date;
-        $guarantor->save();
-        $first_guarantor = $guarantor->id;
-//        dd($first_guarantor);
+        $formInput['applicant_income'] = Account_Details::where('user_id', Auth::id())->get()[0]['total_amount'];
+//        dd($formInput['applicant_income']);
+        $formInput['coapplicant_income'] = Account_Details::where('user_id', $request->coapplicant_id)->get()[0]['total_amount'];
+//        $formInput['coapplicant_income_2'] = Account_Details::where('user_id', $request->coapplicant_id_2)->get('total_amount');
+//        $formInput['coapplicant_income_3'] = Account_Details::where('user_id', $request->coapplicant_id_3)->get('total_amount');
 
-        $guarantor2 = new Guarantor;
-        $guarantor2->user_id = Auth::user()->id;
-        $guarantor2->guarantor_id = $request->coapplicant_id_2;
-        $guarantor2->tracking_number = $tracking_date;
-        $guarantor2->save();
-        $second_guarantor = $guarantor2->id;
-//        dd($second_guarantor);
-
-        $guarantor3 = new Guarantor;
-        $guarantor3->user_id = Auth::user()->id;
-        $guarantor3->guarantor_id = $request->coapplicant_id_3;
-        $guarantor3->tracking_number = $tracking_date;
-        $guarantor3->save();
-        $third_guarantor = $guarantor3->id;
-//        dd($third_guarantor);
 
 
         $response = Http::post('http://127.0.0.1:5000/predict', [
@@ -103,8 +94,8 @@ class LoanController extends Controller
             'Dependants' => $request->dependants,
             'Education' => $request->education,
             'Self_Employed' => $request->self_employed,
-            'ApplicantIncome' => (int)$request->applicant_income,
-            'CoapplicantIncome' => (int)$request->coapplicant_income,
+            'ApplicantIncome' => (int)$formInput['applicant_income'],
+            'CoapplicantIncome' => (int)$formInput['coapplicant_income'],
             'LoanAmount' => (int)$request->loan_amount,
             'Loan_Amount_Term' => (int)$request->loan_amount_term * 365,
             'Credit_History' => (int)$formInput['credit_history'],
@@ -118,7 +109,39 @@ class LoanController extends Controller
         $formInput['default_score'] = $ml_result['default_score'];
 
 
-        Auth::user()->loan_requests()->create($formInput);
+        $loan_id = Auth::user()->loan_requests()->create($formInput)->id;
+
+        $tracking_date = Carbon::now()->timestamp;
+//        dd($date);php
+        $guarantor = new Guarantor;
+        $guarantor->user_id = Auth::user()->id;
+        $guarantor->guarantor_id = $request->coapplicant_id;
+        $guarantor->tracking_number = $tracking_date;
+        $guarantor->loan_id = $loan_id;
+        $guarantor->save();
+        $first_guarantor = $guarantor->id;
+//        dd($first_guarantor);
+
+        $guarantor2 = new Guarantor;
+        $guarantor2->user_id = Auth::user()->id;
+        $guarantor2->guarantor_id = $request->coapplicant_id_2;
+        $guarantor2->tracking_number = $tracking_date;
+        $guarantor2->loan_id = $loan_id;
+        $guarantor2->save();
+        $second_guarantor = $guarantor2->id;
+//        dd($second_guarantor);
+
+        $guarantor3 = new Guarantor;
+        $guarantor3->user_id = Auth::user()->id;
+        $guarantor3->guarantor_id = $request->coapplicant_id_3;
+        $guarantor3->tracking_number = $tracking_date;
+        $guarantor3->loan_id = $loan_id;
+        $guarantor3->save();
+        $third_guarantor = $guarantor3->id;
+//        dd($third_guarantor);
+
+
+
         $user = User::find(Auth::user()->id);
         if ($user) {
             $user->country = $request->country;

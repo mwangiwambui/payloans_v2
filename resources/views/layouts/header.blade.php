@@ -79,7 +79,7 @@
             </div>
             <div class="col-lg-2 col-md-2 hidden-xs">
                 <div class="navigator_btn btn_bg text-right">
-                    <a class="common_btn" href="{{route('application')}}">Apply Now</a>
+                    <a class="common_btn" href="{{route('admin.dashboard')}}">Loans Portal</a>
                 </div>
             </div>
         </div>

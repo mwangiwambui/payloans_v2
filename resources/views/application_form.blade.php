@@ -200,18 +200,18 @@
                                     </div>
                                 </div>
                                 <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Enter Monthly Income</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Ksh.</span>
-                                        </div>
-                                        <input type="number" name="applicant_income" class="form-control">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">.00</span>
-                                        </div>
-                                    </div>
-                                </div>
+{{--                                <div class="form-group">--}}
+{{--                                    <label>Enter Monthly Income</label>--}}
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <span class="input-group-text">Ksh.</span>--}}
+{{--                                        </div>--}}
+{{--                                        <input type="number" name="applicant_income" class="form-control">--}}
+{{--                                        <div class="input-group-append">--}}
+{{--                                            <span class="input-group-text">.00</span>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
                                 <!-- /.form-group -->
                             </div>
                             <!-- /.col -->
@@ -240,16 +240,16 @@
                                 </div>
 
                             </div>
-                            <!-- /.col -->
-                            <div class="col-md-6">
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Co-applicant income</label>
-                                    <input type="number" class="form-control" name="coapplicant_income" placeholder="Enter Co-applicant income ....">
-                                </div>
-                                <!-- /.form-group -->
-                            </div>
-                            <!-- /.col -->
+{{--                            <!-- /.col -->--}}
+{{--                            <div class="col-md-6">--}}
+{{--                                <!-- /.form-group -->--}}
+{{--                                <div class="form-group">--}}
+{{--                                    <label>Co-applicant income</label>--}}
+{{--                                    <input type="number" class="form-control" name="coapplicant_income" placeholder="Enter Co-applicant income ....">--}}
+{{--                                </div>--}}
+{{--                                <!-- /.form-group -->--}}
+{{--                            </div>--}}
+{{--                            <!-- /.col -->--}}
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -262,14 +262,14 @@
 
                             </div>
                             <!-- /.col -->
-                            <div class="col-md-6">
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Co-applicant income</label>
-                                    <input type="number" class="form-control" name="coapplicant_income_2" placeholder="Enter Co-applicant income ....">
-                                </div>
-                                <!-- /.form-group -->
-                            </div>
+{{--                            <div class="col-md-6">--}}
+{{--                                <!-- /.form-group -->--}}
+{{--                                <div class="form-group">--}}
+{{--                                    <label>Co-applicant income</label>--}}
+{{--                                    <input type="number" class="form-control" name="coapplicant_income_2" placeholder="Enter Co-applicant income ....">--}}
+{{--                                </div>--}}
+{{--                                <!-- /.form-group -->--}}
+{{--                            </div>--}}
                             <!-- /.col -->
                         </div>
 
@@ -284,14 +284,14 @@
 
                             </div>
                             <!-- /.col -->
-                            <div class="col-md-6">
-                                <!-- /.form-group -->
-                                <div class="form-group">
-                                    <label>Co-applicant income</label>
-                                    <input type="number" class="form-control" name="coapplicant_income_3" placeholder="Enter Co-applicant income ....">
-                                </div>
-                                <!-- /.form-group -->
-                            </div>
+{{--                            <div class="col-md-6">--}}
+{{--                                <!-- /.form-group -->--}}
+{{--                                <div class="form-group">--}}
+{{--                                    <label>Co-applicant income</label>--}}
+{{--                                    <input type="number" class="form-control" name="coapplicant_income_3" placeholder="Enter Co-applicant income ....">--}}
+{{--                                </div>--}}
+{{--                                <!-- /.form-group -->--}}
+{{--                            </div>--}}
                             <!-- /.col -->
                         </div>
                         <!-- /.row -->

@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href=#" class="brand-link">
+    <a href="#" class="brand-link">
         <img src="{{ asset('admin_lte') }}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">Mzima Loans</span>
     </a>
@@ -35,11 +35,11 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
+                    <a href="{{route('admin.dashboard')}}" class="nav-link active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
-                            <i class="right fas fa-angle-left"></i>
+{{--                            <i class="right fas fa-angle-left"></i>--}}
                         </p>
                     </a>
 {{--                    <ul class="nav nav-treeview">--}}
@@ -72,6 +72,16 @@
                         </p>
                     </a>
                 </li>
+                @endif
+                @if (\Illuminate\Support\Facades\Auth::user()->role_id == 3)
+                    <li class="nav-item">
+                        <a href="{{route('application')}}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Apply Loan
+                            </p>
+                        </a>
+                    </li>
                 @endif
                 <hr>
                 <li class="nav-item">
